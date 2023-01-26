@@ -266,19 +266,20 @@ print(\"Time elapsed:\", toc - tic)
 
 Optional argument CFGNAME is defined in `sascfg_personal.py'.
 Optional argument RESULTS_FORMAT is one of `TEXT', `HTML' or `Pandas'."
-  (interactive "P")
+  (interactive (list sas-py-cfgname sas-py-results-format))
+  (when current-prefix-arg
+    (setq cfgname (read-string "cfgname: " sas-py-cfgname nil sas-py-cfgname))
+    (setq results_format (completing-read "results_format: "
+                                          '("TEXT" "HTML" "PANDAS") nil t
+                                          sas-py-results-format)))
   (let ((sas-py-python-init-string
          (format sas-py-python-init-string
-                 (if current-prefix-arg
-                     (read-string "cfgname: " sas-py-cfgname nil sas-py-cfgname)
-                   sas-py-cfgname)
-                 (if current-prefix-arg
-                     (completing-read "results_format: "
-                                      '("TEXT" "HTML" "PANDAS") nil t
-                                      sas-py-results-format)
-                   sas-py-results-format)
-                 (if sas-py-remote-name-ip-map (car sas-py-remote-name-ip-map) " ")
-                 (if sas-py-remote-name-ip-map (cadr sas-py-remote-name-ip-map) " "))))
+                 cfgname
+                 results_format
+                 (if sas-py-remote-name-ip-map
+                     (car sas-py-remote-name-ip-map) " ")
+                 (if sas-py-remote-name-ip-map
+                     (cadr sas-py-remote-name-ip-map) " "))))
     (python-shell-send-string sas-py-python-init-string)))
 
 
@@ -549,10 +550,14 @@ If working with a remote server, it should be the path in the remote."
           (setq saspy-code (buffer-substring-no-properties
                             (line-beginning-position) (line-end-position)))
           (if sas-py-remote-name-ip-map
-              (setq saspy-code (string-replace
-                                (car sas-py-remote-name-ip-map)
-                                (cadr sas-py-remote-name-ip-map)
-                                saspy-code))
+              ;; Better to use `string-replace' for Emacs 28.1
+              (setq saspy-code
+                    (let ((case-fold-search nil))
+                      (replace-regexp-in-string
+                       (car sas-py-remote-name-ip-map)
+                       (cadr sas-py-remote-name-ip-map)
+                       saspy-code
+                       t t))))
           (setq saspy-code (format "emacs_session = saspy.SASsession(reconuri = \"%s\")" saspy-code)))))
     (python-shell-send-string saspy-code))
   (python-shell-send-string "print(emacs_session)\nprint(emacs_session.reconuri)"))
