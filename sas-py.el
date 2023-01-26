@@ -6,7 +6,7 @@
 ;; Created: 2023/01/26
 ;; Version: 0.1
 ;; URL: https://github.com/ShuguangSun/sas-py
-;; Package-Requires: ((emacs "28.1") (ess "18.10.1"))
+;; Package-Requires: ((emacs "26.1") (project "0.9.0") (ess "18.10.1"))
 ;; Keywords: tools
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -27,7 +27,7 @@
 ;; It runs an interactive python shell and wraps the utilities from SASPy to
 ;; make it convenient to work with SAS for any kind of SASPy supported SAS
 ;; deployments, for example, IOM for local installed SAS on Windows, IOM for
-;; remote workspace server (e.g. SAS OA), and HTTP for SAS Viya. For more access
+;; remote workspace server (e.g. SAS OA), and HTTP for SAS Viya.  For more access
 ;; method, please refer to the documents of SASPy
 ;; [https://sassoftware.github.io/saspy/configuration.html#choosing-an-access-method]
 
@@ -73,7 +73,7 @@ Using default or defined in the `sascfg_personal.py'."
   "A list of the server name and ip mapping.
 
 For example, the workspace server may have a name `foo.bar.com'
-and IP address `192.168.6.1'. Sometimes it only accepts the IP
+and IP address `192.168.6.1'.  Sometimes it only accepts the IP
 address, but `disconnect' returns a `reconuri' with server name.
 It needs to replace the server name with IP address in the
 `reconuri'.
@@ -413,7 +413,7 @@ Optional argument RES-FORMAT results_format of `HTML' or `TEXT'."
 (defun sas-py-submit-in-context (&optional res-format)
   "Submit in context.
 
-Run the code in a temparory SAS session.
+Run the code in a temporary SAS session.
 
 Optional argument RES-FORMAT results_format of `HTML' or `TEXT'."
   (interactive "P")
@@ -492,7 +492,7 @@ If working with a remote server, it should be the path in the remote."
 
 ;;;###autoload
 (defun sas-py-grep-log ()
-  "Grep the log file for error or warinings."
+  "Grep the log file for error or warnings."
   (interactive)
   (ess-sas-file-path)
   (ess-sas-goto-sas)
@@ -532,7 +532,7 @@ If working with a remote server, it should be the path in the remote."
                     (get-process "Python")))
          reconuri-file
          saspy-code)
-    (if (length> reconuri 0)
+    (if (> (length reconuri) 0)
         (setq saspy-code
               (if sas-py-remote-name-ip-map
                   (format "emacs_session = saspy.SASsession(reconuri = emacs_session.reconuri.replace(
@@ -541,13 +541,18 @@ If working with a remote server, it should be the path in the remote."
                           (cadr sas-py-remote-name-ip-map))
                 "emacs_session = saspy.SASsession(reconuri = emacs_session.reconuri"))
       ;; if there is no reconuri returned
-      (when (length= session 0)
+      (when (= (length session) 0)
         (setq reconuri-file (read-file-name "reconuri file: "
                                             (project-root (project-current t))))
         (with-temp-buffer
           (insert-file-contents reconuri-file)
-          (setq saspy-code (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
-          (setq saspy-code (string-replace "WIN-EAN3VMK680E.simcere.com" "192.168.6.171" saspy-code))
+          (setq saspy-code (buffer-substring-no-properties
+                            (line-beginning-position) (line-end-position)))
+          (if sas-py-remote-name-ip-map
+              (setq saspy-code (string-replace
+                                (car sas-py-remote-name-ip-map)
+                                (cadr sas-py-remote-name-ip-map)
+                                saspy-code))
           (setq saspy-code (format "emacs_session = saspy.SASsession(reconuri = \"%s\")" saspy-code)))))
     (python-shell-send-string saspy-code))
   (python-shell-send-string "print(emacs_session)\nprint(emacs_session.reconuri)"))

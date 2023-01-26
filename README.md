@@ -54,27 +54,27 @@ Clone this repository. Add the following to your `.emacs`:
 | sas-py-submit-region     | Submit region with temporary SAS code file                                |
 | sas-py-submit-to-pyshell | Submit to interactive python shell without create temporary SAS code file |
 | sas-py-submit-in-context | Submit in contex, ie, in a separate SAS session                           |
-| sas-py-grep-log          | Grep the log file for error or warinings                                  |
+| sas-py-grep-log          | Grep the log file for error or warnings                                   |
 | sas-py-disconnect        | Disconnect                                                                |
 | sas-py-reconnect         | Reconnect                                                                 |
 | sas-py-endsas            | End SAS session                                                           |
-| sas-py-lastlog           | Print lastlog                                                             |
-| sas-py-assigned_librefs  | Print assigned librefs                                                    |
-| sas-py-list_tables       | Print the list of tables in a library (libref)                            |
-| sas-py-datasets          | Print the list of datasets in a library (libref) using `PROC DATASETS`    |
+| sas-py-lastlog           | Show lastlog                                                              |
+| sas-py-assigned_librefs  | Show assigned librefs                                                     |
+| sas-py-list_tables       | Show the list of tables in a library (libref)                             |
+| sas-py-datasets          | Show the list of datasets in a library (libref) using `PROC DATASETS`     |
 | sas-py-get-dataset       | Get a dataset                                                             |
-| sas-py-lib_path          | Print lib_path of the libref                                              |
-| sas-py-saslog            | Print the full saslog                                                     |
+| sas-py-lib_path          | Show lib_path of the libref                                               |
+| sas-py-saslog            | Show the full saslog                                                      |
 | sas-py-set_results       | Set the format of results                                                 |
 | sas-py-set_batch         | Toggle batch mode                                                         |
 | sas-py-submit-string     | Submit a string or a piece of SAS code                                    |
-| sas-py-getwd             | Print current working directory                                           |
+| sas-py-getwd             | Show current working directory                                            |
 | sas-py-setwd             | Change current working directory                                          |
 | sas-py-list-options      | List SAS options                                                          |
 | sas-py-list-macro-vars   | List macro variables                                                      |
 | sas-py-sascfg            | Show the config file used in this session                                 |
 | sas-py-list_configs      | List config files                                                         |
-| sas-py-data-describe     | Show describe/means of sas data                                           |
+| sas-py-data-describe     | Show describe/means of SAS data                                           |
 
 
 Note:
