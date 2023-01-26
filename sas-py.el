@@ -22,7 +22,7 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-;;; Commentary:
+;;; Commentary: SAS with SASPy
 
 ;; It runs an interactive python shell and wraps the utilities from SASPy to
 ;; make it convenient to work with SAS for any kind of SASPy supported SAS
