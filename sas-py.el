@@ -542,7 +542,7 @@ Optional argument RESULTS_FORMAT is one of `TEXT', `HTML' or `Pandas'."
   (interactive)
   (sas-py-force-buffer-current "Process to use: ")
   (let ((res-format (completing-read "results_format:" '("Pandas" "HTML" "TEXT") nil t))
-        (proc (get-process sas-py-local-process-name)))
+        (proc (sas-py-get-process)))
     (setq sas-py-results-format res-format)
     (python-shell-send-string
      (format "emacs_session.set_results('%s')" res-format)
@@ -555,7 +555,7 @@ Set `set_batch' to `True' or `False'."
   (interactive)
   (sas-py-force-buffer-current "Process to use: ")
   (let ((batchp (completing-read "batch:" '("True" "False") nil t))
-        (proc (get-process sas-py-local-process-name)))
+        (proc (sas-py-get-process)))
     (setq sas-py-batchp (string= batchp "True"))
     (python-shell-send-string
      (format "emacs_session.set_batch(%s)" batchp)
@@ -567,7 +567,7 @@ Set `set_batch' to `True' or `False'."
   (sas-py-force-buffer-current "Process to use: ")
   (let ((sas-code (read-string "sas code: " nil nil))
         (res-format (completing-read "results_format:" '("Pandas" "HTML" "TEXT") nil t "TEXT"))
-        (proc (get-process sas-py-local-process-name)))
+        (proc (sas-py-get-process)))
     (python-shell-send-string
      (format "emacs_session.submitLST(\"\"\"%s\"\"\", '%s')"
              sas-code
@@ -603,7 +603,7 @@ Optional argument RES-FORMAT results_format of `HTML' or `TEXT'."
                      (shell-quote-argument (concat tmpnm ".lst"))
                    (shell-quote-argument (concat tmpnm ".html")))
                  (upcase res-format)))
-         (proc (get-process sas-py-local-process-name)))
+         (proc (sas-py-get-process)))
     (python-shell-send-string saspy-code proc)))
 
 
@@ -638,7 +638,7 @@ Optional argument RES-FORMAT results_format of `HTML' or `TEXT'."
                       (shell-quote-argument (concat tmpnm ".lst"))
                     (shell-quote-argument (concat tmpnm ".html")))
                   (upcase res-format)))
-         (proc (get-process sas-py-local-process-name)))
+         (proc (sas-py-get-process)))
     (python-shell-send-string saspy-code proc)))
 
 ;;;###autoload
@@ -673,7 +673,7 @@ Optional argument RES-FORMAT results_format of `HTML' or `TEXT'."
                       (shell-quote-argument (concat tmpnm ".lst"))
                     (shell-quote-argument (concat tmpnm ".html")))
                   (upcase res-format)))
-         (proc (get-process sas-py-local-process-name)))
+         (proc (sas-py-get-process)))
     (python-shell-send-string saspy-code proc)))
 
 
@@ -711,7 +711,7 @@ Optional argument RES-FORMAT results_format of `HTML' or `TEXT'."
                    (concat tmpnm (if (string-equal-ignore-case res-format "text")
                                      ".lst" ".html")))
                   (upcase res-format)))
-         (proc (get-process sas-py-local-process-name)))
+         (proc (sas-py-get-process)))
     (python-shell-send-string saspy-code proc)))
 
 
@@ -721,7 +721,7 @@ Optional argument RES-FORMAT results_format of `HTML' or `TEXT'."
   "Print current working directory."
   (interactive)
   (sas-py-force-buffer-current "Process to use: ")
-  (let ((proc (get-process sas-py-local-process-name)))
+  (let ((proc (sas-py-get-process)))
     (python-shell-send-string
      "emacs_session.submitLST('%put %sysfunc(dlgcdir());','TEXT')"
      proc)))
@@ -733,7 +733,7 @@ If working with a remote server, it should be the path in the remote."
   (interactive)
   (sas-py-force-buffer-current "Process to use: ")
   (let ((dir (read-string "Remote Directory: " "%sysget(USERPROFILE)/Documents"))
-        (proc (get-process sas-py-local-process-name)))
+        (proc (sas-py-get-process)))
     (python-shell-send-string
      (format "emacs_session.submitLST('%%put %%sysfunc(dlgcdir(\"%s\"));','TEXT')"
              dir)
@@ -743,7 +743,7 @@ If working with a remote server, it should be the path in the remote."
   "List SAS options."
   (interactive)
   (sas-py-force-buffer-current "Process to use: ")
-  (let ((proc (get-process sas-py-local-process-name)))
+  (let ((proc (sas-py-get-process)))
     (python-shell-send-string
      (if current-prefix-arg
          ;; all options
@@ -756,7 +756,7 @@ If working with a remote server, it should be the path in the remote."
   "List macro variables."
   (interactive)
   (sas-py-force-buffer-current "Process to use: ")
-  (let ((proc (get-process sas-py-local-process-name)))
+  (let ((proc (sas-py-get-process)))
     (python-shell-send-string
      (if current-prefix-arg
          ;; all options
@@ -770,14 +770,14 @@ If working with a remote server, it should be the path in the remote."
   "Show the config file used in this session."
   (interactive)
   (sas-py-force-buffer-current "Process to use: ")
-  (let ((proc (get-process sas-py-local-process-name)))
+  (let ((proc (sas-py-get-process)))
     (python-shell-send-string "print(saspy.SAScfg)" proc)))
 
 (defun sas-py-list_configs ()
   "List config files."
   (interactive)
   (sas-py-force-buffer-current "Process to use: ")
-  (let ((proc (get-process sas-py-local-process-name)))
+  (let ((proc (sas-py-get-process)))
     (python-shell-send-string "print(saspy.list_configs())"
                               proc)))
 
@@ -811,14 +811,14 @@ If working with a remote server, it should be the path in the remote."
           (format "emacs_saspy_disconnect(%s)\n"
                   (shell-quote-argument
                    (concat reconuri-file ".reconuri"))))
-         (proc (get-process sas-py-local-process-name)))
+         (proc (sas-py-get-process)))
     (python-shell-send-string saspy-code proc)))
 
 (defun sas-py-reconnect ()
   "Reconnect."
   (interactive)
   (sas-py-force-buffer-current "Process to use: ")
-  (let* ((proc (get-process sas-py-local-process-name))
+  (let* ((proc (sas-py-get-process))
          (session (python-shell-send-string-no-output
                     "try: emacs_session\nexcept NameError: emacs_session = None"
                     proc))
@@ -855,35 +855,35 @@ If working with a remote server, it should be the path in the remote."
           (setq saspy-code (format "emacs_session = saspy.SASsession(reconuri = \"%s\")" saspy-code)))))
     (python-shell-send-string saspy-code proc))
   (python-shell-send-string "print(emacs_session)\nprint(emacs_session.reconuri)"
-                            (get-process sas-py-local-process-name)))
+                            (sas-py-get-process)))
 
 
 (defun sas-py-endsas ()
   "End SAS session."
   (interactive)
   (sas-py-force-buffer-current "Process to use: ")
-  (let ((proc (get-process sas-py-local-process-name)))
+  (let ((proc (sas-py-get-process)))
     (python-shell-send-string "emacs_session.endsas()" proc)))
 
 (defun sas-py-lastlog ()
   "Print lastlog."
   (interactive)
   (sas-py-force-buffer-current "Process to use: ")
-  (let ((proc (get-process sas-py-local-process-name)))
+  (let ((proc (sas-py-get-process)))
     (python-shell-send-string "print(emacs_session.lastlog())" proc)))
 
 (defun sas-py-saslog ()
   "Print the full saslog."
   (interactive)
   (sas-py-force-buffer-current "Process to use: ")
-  (let ((proc (get-process sas-py-local-process-name)))
+  (let ((proc (sas-py-get-process)))
     (python-shell-send-string "print(emacs_session.saslog())" proc)))
 
 (defun sas-py-assigned_librefs ()
   "Print assigned librefs."
   (interactive)
   (sas-py-force-buffer-current "Process to use: ")
-  (let ((proc (get-process sas-py-local-process-name)))
+  (let ((proc (sas-py-get-process)))
     (python-shell-send-string "print(emacs_session.assigned_librefs())"
                               proc)))
 
@@ -891,7 +891,7 @@ If working with a remote server, it should be the path in the remote."
   "Print the list of tables in a library (libref)."
   (interactive)
   (sas-py-force-buffer-current "Process to use: ")
-  (let* ((proc (get-process sas-py-local-process-name))
+  (let* ((proc (sas-py-get-process))
          (lib-names (python-shell-send-string-no-output
                      "'&'.join(emacs_session.assigned_librefs())"
                      proc))
@@ -909,7 +909,7 @@ If working with a remote server, it should be the path in the remote."
   "Print the list of datasets in a library (libref) using `PROC DATASETS'."
   (interactive)
   (sas-py-force-buffer-current "Process to use: ")
-  (let* ((proc (get-process sas-py-local-process-name))
+  (let* ((proc (sas-py-get-process))
          (lib-names (python-shell-send-string-no-output
                      "'&'.join(emacs_session.assigned_librefs())"
                      proc))
@@ -926,7 +926,7 @@ If working with a remote server, it should be the path in the remote."
   "Get a dataset."
   (interactive)
   (sas-py-force-buffer-current "Process to use: ")
-  (let* ((proc (get-process sas-py-local-process-name))
+  (let* ((proc (sas-py-get-process))
          (lib-names (python-shell-send-string-no-output
                      "'&'.join(emacs_session.assigned_librefs())"
                      proc))
@@ -954,7 +954,7 @@ If working with a remote server, it should be the path in the remote."
   "Print lib_path."
   (interactive)
   (sas-py-force-buffer-current "Process to use: ")
-  (let* ((proc (get-process sas-py-local-process-name))
+  (let* ((proc (sas-py-get-process))
          (lib-names (python-shell-send-string-no-output
                      "'&'.join(emacs_session.assigned_librefs())"
                      proc))
@@ -974,7 +974,7 @@ If working with a remote server, it should be the path in the remote."
   "Show describe/means of sas data."
   (interactive)
   (sas-py-force-buffer-current "Process to use: ")
-  (let* ((proc (get-process sas-py-local-process-name))
+  (let* ((proc (sas-py-get-process))
          (lib-names (python-shell-send-string-no-output
                      "'&'.join(emacs_session.assigned_librefs())"
                      proc))
