@@ -35,6 +35,11 @@
 ;; To install SASPy in Python:
 ;; pip install saspy
 
+;; Usage:
+;; 1. Set `sas-py-cfgname' to the config.
+;; 2. Call `run-sas-py'
+;; 3. `sas-py-submit-file' or `sas-py-submit-region'
+
 ;;; Code:
 
 (require 'python)

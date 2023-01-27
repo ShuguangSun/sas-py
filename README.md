@@ -35,6 +35,13 @@ Clone this repository. Add the following to your `.emacs`:
 (require 'sas-py)
 ```
 
+## Usage
+
+1. Set `sas-py-cfgname` to the config.
+2. Call `run-sas-py`
+3. `sas-py-submit-file` or `sas-py-submit-region`
+
+
 ## Customization
 
 | Customization             | Description                                                                     |
@@ -49,7 +56,7 @@ Clone this repository. Add the following to your `.emacs`:
 
 | Command                  | Description                                                               |
 |--------------------------|---------------------------------------------------------------------------|
-| sas-py-python-init       | Init the SASPy Session                                                    |
+| run-sas-py               | Call `run-python` and init SASPy Session                                  |
 | sas-py-submit-file       | Submit SAS code file                                                      |
 | sas-py-submit-region     | Submit region with temporary SAS code file                                |
 | sas-py-submit-to-pyshell | Submit to interactive python shell without create temporary SAS code file |
@@ -78,5 +85,5 @@ Clone this repository. Add the following to your `.emacs`:
 
 
 Note:
-- 'reconnect' is not stable and need to be improved in this package.
+- `sas-py-reconnect` is not stable and need to be improved in this package.
 - `sas-py-data-describe` need to be improved.
