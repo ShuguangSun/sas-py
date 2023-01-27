@@ -31,12 +31,7 @@
 ;; deployments, for example, IOM for local installed SAS on Windows, IOM for
 ;; remote workspace server (e.g. SAS OA), and HTTP for SAS Viya.  For more access
 ;; method, please refer to the documents of SASPy
-;; [https://sassoftware.github.io/saspy/configuration.html#choosing-an-access-method]
 
-
-;; SASPy for Python
-;; https://github.com/sassoftware/saspy
-;; https://sassoftware.github.io/saspy/index.html
 ;; To install SASPy in Python:
 ;; pip install saspy
 
