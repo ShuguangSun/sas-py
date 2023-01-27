@@ -56,6 +56,7 @@
 
 Using default or defined in the `sascfg_personal.py'."
   :type 'string
+  :local t
   :group 'sas-py-)
 
 (defcustom sas-py-results-format "TEXT"

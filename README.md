@@ -51,6 +51,8 @@ Clone this repository. Add the following to your `.emacs`:
 | sas-py-batchp             | Sets the batch attribute for the SASsession object or not                       |
 | sas-py-remote-name-ip-map | A pair of server name and IP address                                            |
 
+- `sas-py-cfgname` can be set buffer-local, for example, set it in `.dir-locals`. So that we can use different config for different files or projects.
+
 
 ## Command
 
