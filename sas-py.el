@@ -121,12 +121,12 @@ See also `python-shell-dedicated' for more information.."
 (defvar sas-py-regex-parse-log
   (downcase
    (concat
-    "^ERROR [0-9]+-[0-9]+:|^ERROR:|_ERROR_=1 _N_=|_ERROR_=1[ ]?$"
+    "^ERROR [0-9]+-[0-9]+:|^ERROR:|_ERROR_=1|ERROR DETECTED"
     "|^WARNING [0-9]+-[0-9]+:|^WARNING:"
     "|^NOTE [0-9]+-[0-9]+:"
     "|^NOTE: SAS went to a new line when INPUT statement reached past"
     "|^NOTE: Compressing data set .* increased size by"
-    "|^NOTE: ERROR DETECTED IN ANNOTATE="
+    ;; "|^NOTE: ERROR DETECTED IN ANNOTATE="
     "|^note.+not (included|met|positive def|found|used)"
     "|^note.+(more than one|uninitialized|be singular|infinite likelihood|nonpositive definite|no statistics|undefined|invalid data)"
     "|Bus Error In Task|Segmentation Violation In Task"))
