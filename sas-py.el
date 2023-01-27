@@ -458,7 +458,7 @@ See also `ess-get-process'."
          (save-current-buffer
            (message "trying to (re)start process %s for language SAS ..."
                     name)
-           (run-sas-py)
+           (run-sas-py nil sas-py-python-shell-dedicated t)
            ;; and return the process: "call me again"
            (sas-py-get-process name)))
         ;; else: there are other running processes
@@ -496,7 +496,7 @@ See also `ess-request-a-process'."
          (num-processes (length pname-list))
          proc auto-started?)
     (when (= 0 num-processes)
-      (run-sas-py)
+      (run-sas-py nil sas-py-python-shell-dedicated t)
       (setq num-processes 1
             pname-list (car sas-py-process-name-list)
             auto-started? t))
@@ -520,7 +520,7 @@ See also `ess-request-a-process'."
                   ;; Prevent new process buffer from being popped
                   ;; because we handle display depending on the value
                   ;; of `no-switch`
-                  (run-sas-py)
+                  (run-sas-py nil sas-py-python-shell-dedicated t)
                   (caar sas-py-process-name-list))))))
     ;; Always display buffer if auto-started but do not select it if
     ;; NOSWITCH is set
