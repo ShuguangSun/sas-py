@@ -201,7 +201,7 @@ def emacs_saspy_submit_file(sas_fname : str,
         for line in f1:
             line_number += 1
             if re.search(emacs_log_pattern, line):
-                print(f\"{log_fname}:{line_number}:{line})
+                print(f\"{log_fname}:{line_number}:{line}\")
 
     toc = timeit.default_timer()
     print(\"Time elapsed:\", toc - tic)
@@ -238,7 +238,7 @@ def emacs_saspy_submit_region(sas_code : str,
         for line in f1:
             line_number += 1
             if re.search(emacs_log_pattern, line):
-                print(f\"{log_fname}:{line_number}:{line})
+                print(f\"{log_fname}:{line_number}:{line}\")
 
     toc = timeit.default_timer()
     print(\"Time elapsed:\", toc - tic)
@@ -268,7 +268,7 @@ def emacs_saspy_submit_context(sas_code : str,
         for line in f1:
             line_number += 1
             if re.search(emacs_log_pattern, line):
-                print(f\"{log_fname}:{line_number}:{line})
+                print(f\"{log_fname}:{line_number}:{line}\")
 
     toc = timeit.default_timer()
     print(\"Time elapsed:\", toc - tic)
