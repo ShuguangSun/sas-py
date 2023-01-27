@@ -121,7 +121,6 @@ See also `python-shell-dedicated' for more information.."
 (defvar sas-py-regex-parse-log
   (downcase
    (concat
-    "\""
     "^ERROR [0-9]+-[0-9]+:|^ERROR:|_ERROR_=1 _N_=|_ERROR_=1[ ]?$"
     "|^WARNING [0-9]+-[0-9]+:|^WARNING:"
     "|^NOTE [0-9]+-[0-9]+:"
@@ -130,11 +129,8 @@ See also `python-shell-dedicated' for more information.."
     "|^NOTE: ERROR DETECTED IN ANNOTATE="
     "|^note.+not (included|met|positive def|found|used)"
     "|^note.+(more than one|uninitialized|be singular|infinite likelihood|nonpositive definite|no statistics|undefined|invalid data)"
-    "|Bus Error In Task|Segmentation Violation In Task"
-    "\""))
+    "|Bus Error In Task|Segmentation Violation In Task"))
   "The regex for parsing the SAS LOG.")
-
-
 
 
 (defvar sas-py-python-init-string "
@@ -839,7 +835,7 @@ If working with a remote server, it should be the path in the remote."
   (hack-local-variables)
   (let ((compile-command
          (concat
-          "grep -i -n -H -E " sas-py-regex-parse-log " "
+          "grep -i -n -H -E \"" sas-py-regex-parse-log "\" "
           (shell-quote-argument
            (concat (file-name-sans-extension (file-name-nondirectory ess-sas-file-path))
                    (if current-prefix-arg
