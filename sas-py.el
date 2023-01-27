@@ -627,18 +627,17 @@ Set `set_batch' to `True' or `False'."
   "Submit SAS code file.
 
 Optional argument RES-FORMAT results_format of `HTML' or `TEXT'."
-  (interactive "P")
+  (interactive
+   (if current-prefix-arg
+      (list (completing-read "results_format:" '("HTML" "TEXT") nil t))
+     (list sas-py-results-format)))
+
   (ess-sas-file-path)
   (ess-sas-goto-sas)
   (save-buffer)
   (hack-local-variables)
 
   (sas-py-force-buffer-current "Process to use: ")
-
-  (if current-prefix-arg
-      (setq res-format (completing-read "results_format:" '("HTML" "TEXT") nil t))
-      (if (not res-format)
-          (setq res-format sas-py-results-format)))
 
   (let* ((tmpnm (file-name-sans-extension ess-sas-file-path))
          (saspy-code
@@ -658,7 +657,11 @@ Optional argument RES-FORMAT results_format of `HTML' or `TEXT'."
   "Submit region.
 
 Optional argument RES-FORMAT results_format of `HTML' or `TEXT'."
-  (interactive "P")
+  (interactive
+   (if current-prefix-arg
+      (list (completing-read "results_format:" '("HTML" "TEXT") nil t))
+     (list sas-py-results-format)))
+
   (ess-sas-file-path)
   (hack-local-variables)
   (sas-py-force-buffer-current "Process to use: ")
@@ -668,11 +671,6 @@ Optional argument RES-FORMAT results_format of `HTML' or `TEXT'."
                     (concat (ess-sas-temp-root) ".sas"))
     (write-region (point-min) (point-max)
                   (concat (ess-sas-temp-root) ".sas")))
-
-  (if current-prefix-arg
-      (setq res-format (completing-read "results_format:" '("HTML" "TEXT") nil t))
-      (if (not res-format)
-          (setq res-format sas-py-results-format)))
 
   (let* ((tmpnm (concat (file-name-sans-extension ess-sas-file-path)
                         ess-sas-temp-root))
@@ -692,18 +690,17 @@ Optional argument RES-FORMAT results_format of `HTML' or `TEXT'."
   "Submit without creating temporary SAS code file.
 
 Optional argument RES-FORMAT results_format of `HTML' or `TEXT'."
-  (interactive "P")
+  (interactive
+   (if current-prefix-arg
+      (list (completing-read "results_format:" '("HTML" "TEXT") nil t))
+     (list sas-py-results-format)))
+
   (ess-sas-file-path)
   (ess-sas-goto-sas)
   (save-buffer)
   (hack-local-variables)
 
   (sas-py-force-buffer-current "Process to use: ")
-
-  (if current-prefix-arg
-      (setq res-format (completing-read "results_format:" '("HTML" "TEXT") nil t))
-      (if (not res-format)
-          (setq res-format sas-py-results-format)))
 
   (let* ((tmpnm (concat (file-name-sans-extension ess-sas-file-path)
                         (if (use-region-p) ess-sas-temp-root)))
@@ -730,18 +727,17 @@ Optional argument RES-FORMAT results_format of `HTML' or `TEXT'."
 Run the code in a temporary SAS session.
 
 Optional argument RES-FORMAT results_format of `HTML' or `TEXT'."
-  (interactive "P")
+  (interactive
+   (if current-prefix-arg
+      (list (completing-read "results_format:" '("HTML" "TEXT") nil t))
+     (list sas-py-results-format)))
+
   (ess-sas-file-path)
   (ess-sas-goto-sas)
   (save-buffer)
   (hack-local-variables)
 
   (sas-py-force-buffer-current "Process to use: ")
-
-  (if current-prefix-arg
-      (setq res-format (completing-read "results_format:" '("HTML" "TEXT") nil t))
-    (if (not res-format)
-        (setq res-format sas-py-results-format)))
 
   (let* ((tmpnm (concat (file-name-sans-extension ess-sas-file-path)
                         (if (use-region-p) ess-sas-temp-root)))
