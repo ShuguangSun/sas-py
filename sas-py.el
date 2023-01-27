@@ -343,7 +343,9 @@ See also DEDICATED in `run-pthon'."
         (unless conselt
           (setq sas-py-process-name-list
                 (cons (cons proc-name nil) sas-py-process-name-list)))))
-    (setq-local sas-py-local-process-name proc-name)
+    ;; set local process name of SAS file
+    (if (equal "SAS" ess-dialect)
+        (setq-local sas-py-local-process-name proc-name))
     inf-buf))
 
 ;;;###autoload
@@ -358,7 +360,7 @@ See also DEDICATED in `run-pthon'."
 See also `ess-switch-to-ESS'."
   (interactive)
   (pop-to-buffer
-   (buffer-name (process-buffer (get-process sas-py-current-process-name)))
+   (buffer-name (process-buffer (sas-py-get-process)))
    '(nil . ((inhibit-same-window . t))))
   (goto-char (point-max)))
 
@@ -386,7 +388,7 @@ See also `ess-switch-to-inferior-or-script-buffer'."
     (sas-py-switch-to-python)))
 
 (defun sas-py-get-process-buffer (&optional name)
-  "Return the buffer associated with the ESS process named by NAME.
+  "Return the buffer associated with the Python process named by NAME.
 
 See also `ess-get-process-buffer'."
   (process-buffer (sas-py-get-process (or name sas-py-local-process-name))))
@@ -487,7 +489,7 @@ See also `ess-request-a-process'."
 
 
 (defun sas-py-force-buffer-current (&optional prompt force no-autostart ask-if-1)
-  "Make sure the current buffer is attached to an ESS process.
+  "Make sure the current buffer is attached to an Python process.
 If not, or FORCE (prefix argument) is non-nil, prompt for a
 process name with PROMPT. If NO-AUTOSTART is nil starts the new
 process if process associated with current buffer has
