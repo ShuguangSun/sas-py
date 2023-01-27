@@ -22,7 +22,9 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-;;; Commentary: SAS with SASPy
+;;; Commentary:
+
+;; SAS with SASPy
 
 ;; It runs an interactive python shell and wraps the utilities from SASPy to
 ;; make it convenient to work with SAS for any kind of SASPy supported SAS
@@ -377,6 +379,7 @@ See also DEDICATED in `run-pthon'."
 
 ;;;###autoload
 (defun sas-py (&optional start-args dedicated)
+  "Run sas-py in the same directory of the SAS file."
   (interactive "P")
   (set-buffer (run-sas-py start-args dedicated)))
 
