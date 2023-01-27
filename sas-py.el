@@ -336,7 +336,7 @@ Executed in process buffer."
     (python-shell-send-string sas-py-python-init-string)))
 
 ;;;###autoload
-(defun run-sas-py (&optional start-args dedicated)
+(defun run-sas-py (&optional start-args dedicated show)
   "Call `run-python' with optional arugment START-ARGS and DEDICATED.
 
 If you have certain command line arguments that should always be passed
@@ -355,18 +355,21 @@ See also DEDICATED in `run-pthon'."
                                               '((?b "to buffer")
                                                 (?p "to project")
                                                 (?n "no"))))
-                   '((?b . buffer) (?p . project))))
+                   '((?b . buffer) (?p . project)))
+        (= (prefix-numeric-value current-prefix-arg) 4))
      (list (concat (python-shell-calculate-command)
                    sas-py-interpreter-args)
-           sas-py-python-shell-dedicated)))
+           sas-py-python-shell-dedicated
+           t)))
 
-  (let* ((inf-proc (run-python start-args dedicated))
+  (let* ((inf-proc (run-python start-args dedicated show))
          (proc-name (process-name inf-proc))
          (inf-buf (process-buffer inf-proc)))
     (with-current-buffer inf-buf
       (sleep-for sas-py-sleep-for-shell)
       (sas-py-initialize-on-start)
       (comint-goto-process-mark)
+      (setq-local ess-dialect "SAS")
       (setq-local sas-py-local-process-name proc-name)
       (let ((conselt (assoc proc-name sas-py-process-name-list)))
         (unless conselt
@@ -476,19 +479,29 @@ to `completing-read'.
 See also `ess-request-a-process'."
   (interactive (list "Switch to which Python process? " current-prefix-arg))
   (sas-py-update-process-name-list)
-  (let* ((pname-list sas-py-process-name-list)
+  (let* ((pname-list (delq nil ;; keep only those matching dialect
+                           (append
+                            (mapcar (lambda (lproc)
+                                      (and (equal "SAS"
+                                                  (buffer-local-value
+                                                   'ess-dialect
+                                                   (process-buffer (get-process (car lproc)))))
+                                           (not (equal sas-py-local-process-name (car lproc)))
+                                           (car lproc)))
+                                    sas-py-process-name-list)
+                            ;; append local only if running
+                            (when (assoc sas-py-local-process-name sas-py-process-name-list)
+                              (list sas-py-local-process-name)))))
          (num-processes (length pname-list))
          proc auto-started?)
     (when (= 0 num-processes)
       (run-sas-py)
       (setq num-processes 1
-            pname-list (car ess-process-name-list)
+            pname-list (car sas-py-process-name-list)
             auto-started? t))
     ;; now num-processes >= 1 :
     (let* ((proc-buffers (mapcar (lambda (lproc)
-                                   (print lproc)
-                                   (print (car lproc))
-                                   (buffer-name (process-buffer (get-process (car lproc)))))
+                                   (buffer-name (process-buffer (get-process lproc))))
                                  pname-list)))
       (setq proc
             (if (or auto-started?
@@ -507,7 +520,7 @@ See also `ess-request-a-process'."
                   ;; because we handle display depending on the value
                   ;; of `no-switch`
                   (run-sas-py)
-                  (caar ess-process-name-list))))))
+                  (caar sas-py-process-name-list))))))
     ;; Always display buffer if auto-started but do not select it if
     ;; NOSWITCH is set
     (when (or auto-started? (not noswitch))
