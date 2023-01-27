@@ -344,6 +344,7 @@ If you have certain command line arguments that should always be passed
 to `run-python', put them in the variable `sas-py-interpreter-args'.
 
 START-ARGS can be a string representing an argument.
+When numeric prefix arg is other than 0 or 4 do not SHOW.
 
 See also DEDICATED in `run-pthon'."
   (interactive
@@ -383,7 +384,12 @@ See also DEDICATED in `run-pthon'."
 
 ;;;###autoload
 (defun sas-py (&optional start-args dedicated)
-  "Run sas-py in the same directory of the SAS file."
+  "Run `sas-py' in the same directory of the SAS file.
+
+START-ARGS can be a string representing an argument.
+When numeric prefix arg is other than 0 or 4 do not SHOW.
+
+See also DEDICATED in `run-pthon'."
   (interactive "P")
   (set-buffer (run-sas-py start-args dedicated)))
 
