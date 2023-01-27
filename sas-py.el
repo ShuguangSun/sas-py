@@ -170,7 +170,16 @@ def emacs_saspy_submit_file(sas_fname : str,
                             lst_fname : str,
                             results_format : str = 'HTML'):
 
+    print(datetime.now())
     tic = timeit.default_timer()
+
+    try:
+        emacs_session
+
+        if emacs_session is None:
+            print(\"No SAS session attached!\")
+    except NameError:
+        print(\"No SAS session attached!\")
 
     with open(sas_fname,mode='r') as sas_file:
         sas_code_txt = sas_file.read()
@@ -201,7 +210,16 @@ def emacs_saspy_submit_region(sas_code : str,
                               lst_fname : str,
                               results_format : str = 'HTML'):
 
+    print(datetime.now())
     tic = timeit.default_timer()
+
+    try:
+        emacs_session
+
+        if emacs_session is None:
+            print(\"No SAS session attached!\")
+    except NameError:
+        print(\"No SAS session attached!\")
 
     ll = emacs_session.submit(sas_code, results=results_format.upper())
 
@@ -276,6 +294,15 @@ def emacs_saspy_reconnect(sas : 'saspy.SASsession' = emacs_session,
 
 
 def emacs_saspy_disconnect(log_fname : str) :
+
+    try:
+        emacs_session
+
+        if emacs_session is None:
+            print(\"No SAS session attached!\")
+    except NameError:
+        print(\"No SAS session attached!\")
+
     emacs_session.disconnect()
 
     with open(log_fname, 'w') as f1:
