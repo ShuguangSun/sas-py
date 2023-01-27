@@ -126,11 +126,10 @@ See also `python-shell-dedicated' for more information.."
     "|^NOTE [0-9]+-[0-9]+:"
     "|^NOTE: SAS went to a new line when INPUT statement reached past"
     "|^NOTE: Compressing data set .* increased size by"
-    ;; "|^NOTE: ERROR DETECTED IN ANNOTATE="
     "|^note.+not (included|met|positive def|found|used)"
     "|^note.+(more than one|uninitialized|be singular|infinite likelihood|nonpositive definite|no statistics|undefined|invalid data)"
     "|Bus Error In Task|Segmentation Violation In Task"))
-  "The regex for parsing the SAS LOG.")
+  "The grep extended regex for parsing the SAS LOG.")
 
 
 (defvar sas-py-python-init-string "
