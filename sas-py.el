@@ -4,9 +4,9 @@
 
 ;; Author: Shuguang Sun <shuguang79@qq.com>
 ;; Created: 2023/01/26
-;; Version: 0.1
+;; Version: 0.2
 ;; URL: https://github.com/ShuguangSun/sas-py
-;; Package-Requires: ((emacs "26.1") (project "0.9.0") (ess "18.10.1"))
+;; Package-Requires: ((emacs "28.1") (ess "18.10.1"))
 ;; Keywords: tools
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -645,7 +645,7 @@ Optional argument RES-FORMAT results_format of `HTML' or `TEXT'."
          (format "emacs_saspy_submit_file(%s, %s, %s, results_format ='%s')\n"
                  (shell-quote-argument ess-sas-file-path)
                  (shell-quote-argument (concat tmpnm ".log"))
-                 (if (string-equal-ignore-case res-format "text")
+                 (if (string= (upcase res-format) "TEXT")
                      (shell-quote-argument (concat tmpnm ".lst"))
                    (shell-quote-argument (concat tmpnm ".html")))
                  (upcase res-format)))
@@ -679,7 +679,7 @@ Optional argument RES-FORMAT results_format of `HTML' or `TEXT'."
           (format "emacs_saspy_submit_file(%s, %s, %s, results_format ='%s')\n"
                   (shell-quote-argument (concat tmpnm ".sas"))
                   (shell-quote-argument (concat tmpnm ".log"))
-                  (if (string-equal-ignore-case res-format "text")
+                  (if (string= (upcase res-format) "TEXT")
                       (shell-quote-argument (concat tmpnm ".lst"))
                     (shell-quote-argument (concat tmpnm ".html")))
                   (upcase res-format)))
@@ -713,7 +713,7 @@ Optional argument RES-FORMAT results_format of `HTML' or `TEXT'."
           (format "emacs_saspy_submit_region(\"\"\"%s\"\"\", %s, %s, results_format ='%s')\n"
                   code-string
                   (shell-quote-argument (concat tmpnm ".log"))
-                  (if (string-equal-ignore-case res-format "text")
+                  (if (string= (upcase res-format) "TEXT")
                       (shell-quote-argument (concat tmpnm ".lst"))
                     (shell-quote-argument (concat tmpnm ".html")))
                   (upcase res-format)))
@@ -751,7 +751,7 @@ Optional argument RES-FORMAT results_format of `HTML' or `TEXT'."
                   code-string
                   (shell-quote-argument (concat tmpnm ".log"))
                   (shell-quote-argument
-                   (concat tmpnm (if (string-equal-ignore-case res-format "text")
+                   (concat tmpnm (if (string= (upcase res-format) "TEXT")
                                      ".lst" ".html")))
                   (upcase res-format)))
          (proc (sas-py-get-process)))
