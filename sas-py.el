@@ -590,7 +590,7 @@ Optional argument RESULTS_FORMAT is one of `TEXT', `HTML' or `Pandas'."
   (sas-py-force-buffer-current "Process to use: ")
   (let ((res-format (completing-read "results_format:" '("Pandas" "HTML" "TEXT") nil t))
         (proc (sas-py-get-process)))
-    (setq sas-py-results-format res-format)
+    (setq sas-py-results-format (upcase res-format))
     (python-shell-send-string
      (format "emacs_session.set_results('%s')" res-format)
      proc)))
@@ -1036,10 +1036,10 @@ If working with a remote server, it should be the path in the remote."
                                   datasets) "&")))
          (saspy-code
           (format (concat
-                   (if (string= sas-py-results-format "HTML")
+                   (if (string= (upcase sas-py-results-format) "HTML")
                        "emacs_session.set_batch('True')\n")
                    "___%1$s_ = emacs_session.sasdata('%1$s',libref='%2$s',results='%3$s')\n"
-                   (if (string= sas-py-results-format "HTML")
+                   (if (string= (upcase sas-py-results-format) "HTML")
                        (if sas-py-batchp
                            "emacs_session.set_batch('True')\n"
                          "emacs_session.set_batch('False')\n"))
@@ -1053,7 +1053,7 @@ If working with a remote server, it should be the path in the remote."
     (with-current-buffer (get-buffer-create "*saspy*")
       (erase-buffer)
       (insert res)
-      (if (string= sas-py-results-format "HTML")
+      (if (string= (upcase sas-py-results-format) "HTML")
           (progn (require 'shr)
                  (shr-render-buffer (current-buffer))))
       (goto-char (point-min))
