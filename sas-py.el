@@ -51,7 +51,7 @@
   :prefix "sas-py-")
 
 
-(defcustom sas-py-cfgname "default"
+(defcustom sas-py-cfgname "winlocal"
   "The cfgname.
 
 Using default or defined in the `sascfg_personal.py'."
